@@ -18,6 +18,8 @@
     <modules>
         <module>app</module>
         <module>core</module>
+        <module>dto</module>
+        <module>storage</module>
     </modules>
 
     <properties>
