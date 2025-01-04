@@ -2,7 +2,7 @@ package teyvatexp.authorization_server.core.mapper;
 
 import org.mapstruct.Mapper;
 import teyvatexp.authorization_server.dto.User;
-import teyvatexp.authorization_server.storage.UserEntity;
+import teyvatexp.authorization_server.storage.entity.UserEntity;
 
 @Mapper
 public interface UserMapper {

@@ -1,4 +1,4 @@
-package teyvatexp.authorization_server.storage;
+package teyvatexp.authorization_server.storage.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

@@ -12,7 +12,11 @@
 	<artifactId>app</artifactId>
 
 	<dependencies>
-
+		<dependency>
+			<groupId>teyvatexp.authorization_server</groupId>
+			<artifactId>core</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 
 	<build>
