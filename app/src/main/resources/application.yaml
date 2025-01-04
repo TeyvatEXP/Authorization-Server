@@ -3,3 +3,8 @@ spring:
    name: app
   config:
     import: "classpath:application-storage.yaml"
+
+
+server:
+  servlet:
+    context-path: /api/v1/authorization-server
