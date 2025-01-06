@@ -1,0 +1,21 @@
+spring:
+  security:
+    oauth2:
+      authorizationserver:
+        client:
+          # Test client for development purpose
+          public-client:
+            registration:
+              client-id: "public-client"
+              client-authentication-methods:
+                - "none"
+              authorization-grant-types:
+                - "authorization_code"
+              redirect-uris:
+                - "https://google.com"
+              scopes:
+                - "openid"
+                - "profile"
+            require-authorization-consent: false
+            require-proof-key: true
+        issuer: http://localhost:${APP_PORT}

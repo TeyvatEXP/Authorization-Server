@@ -2,9 +2,12 @@ spring:
   application:
    name: app
   config:
-    import: "classpath:application-storage.yaml"
-
-
+    import:
+      - "classpath:application-storage.yaml"
+      - "classpath:application-core.yaml"
+apiPrefix: /api/v1/authorization-server
+logging:
+  level:
+    org.springframework: DEBUG
 server:
-  servlet:
-    context-path: /api/v1/authorization-server
+  port: ${APP_PORT}
