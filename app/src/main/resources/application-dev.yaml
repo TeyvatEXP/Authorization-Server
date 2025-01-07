@@ -1,0 +1,13 @@
+spring:
+  web:
+    resources:
+      cache:
+        period: 0
+  thymeleaf:
+    cache: false
+  devtools:
+    restart:
+      additional-paths: static/**
+logging:
+  level:
+    org.springframework: DEBUG

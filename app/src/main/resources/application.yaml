@@ -6,8 +6,5 @@ spring:
       - "classpath:application-storage.yaml"
       - "classpath:application-core.yaml"
 apiPrefix: /api/v1/authorization-server
-logging:
-  level:
-    org.springframework: DEBUG
 server:
   port: ${APP_PORT}

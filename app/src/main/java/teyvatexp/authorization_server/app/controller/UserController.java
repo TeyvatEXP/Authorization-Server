@@ -10,7 +10,7 @@ import teyvatexp.authorization_server.core.service.UserService;
 import teyvatexp.authorization_server.dto.User;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("${apiPrefix}/users")
 @RequiredArgsConstructor
 public class UserController {
 

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Please Log In</title>
+    <link rel="stylesheet" th:href="@{/styles/cssandjs/login.css}"/>
+</head>
+<body>
+<div>
+    <form class="container" th:action="@{/login}" method="post">
+        <h1 class="login-title">Login</h1>
+        <div th:if="${param.error}" class="invalid-data">
+            Invalid username or password.</div>
+        <section class="input-box">
+            <input type="text" name="username" placeholder="Username"/>
+        </section>
+        <section class="input-box">
+            <input type="password" name="password" placeholder="Password"/>
+        </section>
+        <section class="submit-button">
+            <input type="submit" value="Log in" />
+        </section>
+    </form>
+</div>
+</body>
+</html>
