@@ -5,20 +5,24 @@
     <link rel="stylesheet" th:href="@{/styles/cssandjs/login.css}"/>
 </head>
 <body>
-<div>
+<div class="root-div">
     <form class="container" th:action="@{/login}" method="post">
-        <h1 class="login-title">Login</h1>
-        <div th:if="${param.error}" class="invalid-data">
-            Invalid username or password.</div>
-        <section class="input-box">
-            <input type="text" name="username" placeholder="Username"/>
+        <h1 class="login-title">Hello!</h1>
+        <section th:class="${param.error != null} ? 'input-box-error' : 'input-box'">
+            <input type="text" name="username" placeholder="EmailAddress"/>
+            <img src="/images/svg/profile.svg" alt="profile-image">
         </section>
-        <section class="input-box">
+        <section th:class="${param.error != null} ? 'input-box-error' : 'input-box'">
             <input type="password" name="password" placeholder="Password"/>
+            <img src="/images/svg/lock.svg">
         </section>
+        <div th:if="${param.error}" class="invalid-data">
+            The username and/or password you specified are not correct.
+        </div>
         <section class="submit-button">
-            <input type="submit" value="Log in" />
+            <input type="submit" value="Log in"/>
         </section>
+        <label class="forgot-password">Forgot password?</label>
     </form>
 </div>
 </body>
