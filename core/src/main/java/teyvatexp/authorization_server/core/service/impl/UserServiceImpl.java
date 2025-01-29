@@ -7,6 +7,7 @@ import teyvatexp.authorization_server.api.dto.UserDTO;
 import teyvatexp.authorization_server.core.mapper.UserMapper;
 import teyvatexp.authorization_server.core.service.UserService;
 import teyvatexp.authorization_server.dto.User;
+import teyvatexp.authorization_server.storage.entity.UserEntity;
 import teyvatexp.authorization_server.storage.repository.UserRepository;
 
 @Service
@@ -19,6 +20,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public User createUser(UserDTO user) {
-        return mapper.mapToDTO(repository.save(mapper.mapToEntity(user)));
+        UserEntity userEntity = mapper.mapToEntity(user);
+        return mapper.mapToDTO(repository.save(userEntity));
     }
 }
