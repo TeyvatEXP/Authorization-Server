@@ -14,6 +14,7 @@ public class UserDTO {
     private String email;
     @NotNull(message = "Password must not be null.")
     @Size(min = 8, message = "Password must be large than 8.")
-    @Pattern(regexp = "^[A-Za-z0-9!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?]*$")
+    @Pattern(regexp = "^[A-Za-z0-9!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?]*$",
+            message = "Only alphanumeric characters and special symbols are allowed.")
     private String password;
 }
