@@ -10,7 +10,7 @@ import teyvatexp.authorization_server.storage.entity.Role;
 import teyvatexp.authorization_server.storage.entity.UserEntity;
 
 @Component
-public class UserMapperDecorator implements UserMapper {
+public abstract class UserMapperDecorator implements UserMapper {
 
     @Autowired
     private UserMapper delegate;

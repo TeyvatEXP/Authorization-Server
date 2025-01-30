@@ -1,9 +1,10 @@
 package teyvatexp.authorization_server.api.dto;
 
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
-import teyvatexp.authorization_server.api.util.Password;
 
 @Data
 public class UserDTO {
@@ -11,6 +12,8 @@ public class UserDTO {
     private String username;
     @Email(message = "Please enter valid email.")
     private String email;
-    @Password
+    @NotNull(message = "Password must not be null.")
+    @Size(min = 8, message = "Password must be large than 8.")
+    @Pattern(regexp = "^[A-Za-z0-9!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?]*$")
     private String password;
 }
