@@ -1,7 +1,9 @@
 package teyvatexp.authorization_server.core.security;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,10 +13,15 @@ import java.util.Collection;
 import java.util.Collections;
 
 @Getter
-@RequiredArgsConstructor
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "@class")
 public class TeyvatEXPUserDetails implements UserDetails {
 
     private final UserEntity userEntity;
+
+    @JsonCreator
+    public TeyvatEXPUserDetails(@JsonProperty("userEntity") UserEntity userEntity) {
+        this.userEntity = userEntity;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

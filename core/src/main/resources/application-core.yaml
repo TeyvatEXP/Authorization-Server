@@ -1,4 +1,15 @@
 spring:
+  session:
+    redis:
+      namespace: teyvatexp:session
+      flush-mode: on_save
+      save-mode: on_set_attribute
+    timeout: 1800
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD}
   security:
     oauth2:
       authorizationserver:
@@ -12,7 +23,7 @@ spring:
               authorization-grant-types:
                 - "authorization_code"
               redirect-uris:
-                - "https://google.com"
+                - "http://localhost:5173/callback"
               scopes:
                 - "openid"
                 - "profile"

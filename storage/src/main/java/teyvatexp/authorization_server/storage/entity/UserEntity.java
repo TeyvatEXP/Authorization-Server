@@ -1,5 +1,6 @@
 package teyvatexp.authorization_server.storage.entity;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -19,6 +20,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "users")
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "@class")
 public class UserEntity {
 
     @Id
