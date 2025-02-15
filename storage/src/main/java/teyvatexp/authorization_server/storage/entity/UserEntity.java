@@ -1,6 +1,8 @@
 package teyvatexp.authorization_server.storage.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -16,7 +18,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "User")
+@Table(name = "users")
 public class UserEntity {
 
     @Id
@@ -27,8 +29,10 @@ public class UserEntity {
     private String email;
 
     @NotNull
-    private String login;
-
-    @NotNull
     private String password;
+
+    private String username;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 }
