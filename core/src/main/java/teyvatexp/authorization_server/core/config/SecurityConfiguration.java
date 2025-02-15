@@ -69,6 +69,7 @@ public class SecurityConfiguration {
         return http
                 .securityMatcher("/api/**")
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(HttpMethod.POST, apiPrefix + "/users").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/public/**").permitAll()
                         .anyRequest().authenticated()
                 )
@@ -87,7 +88,6 @@ public class SecurityConfiguration {
         return http
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/login", "/styles/**", "/fonts/**", "/images/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, apiPrefix + "/users").permitAll()
                         .anyRequest().authenticated())
                 .csrf(csrf -> csrf
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
