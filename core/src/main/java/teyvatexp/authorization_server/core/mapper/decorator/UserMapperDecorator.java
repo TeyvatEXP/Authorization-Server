@@ -5,7 +5,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import teyvatexp.authorization_server.api.dto.UserDTO;
 import teyvatexp.authorization_server.core.mapper.UserMapper;
-import teyvatexp.authorization_server.dto.User;
 import teyvatexp.authorization_server.storage.entity.Role;
 import teyvatexp.authorization_server.storage.entity.UserEntity;
 
@@ -24,11 +23,6 @@ public abstract class UserMapperDecorator implements UserMapper {
         userEntity.setPassword(encoder.encode(user.getPassword()));
         userEntity.setRole(Role.USER);
         return userEntity;
-    }
-
-    @Override
-    public User mapToDTO(UserEntity entity) {
-        return delegate.mapToDTO(entity);
     }
 
     @Override
