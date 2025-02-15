@@ -21,6 +21,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.List;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
@@ -28,23 +30,29 @@ public class SecurityConfiguration {
     @Value("${apiPrefix}")
     private String apiPrefix;
 
+    /**
+     * Конфигурация авторизационного сервера (OAuth2 Authorization Server)
+     */
     @Bean
     @Order(1)
     public SecurityFilterChain authorizationServerFilterChain(HttpSecurity http) throws Exception {
         OAuth2AuthorizationServerConfigurer authorizationServerConfigurer =
-                OAuth2AuthorizationServerConfigurer.authorizationServer();
+                new OAuth2AuthorizationServerConfigurer();
 
         return http
+                .securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())
+                .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
-                .securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())
-                .with(authorizationServerConfigurer, (authorizationServer) ->
+                .with(authorizationServerConfigurer, authorizationServer ->
                         authorizationServer
                                 .oidc(Customizer.withDefaults())
                 )
-                .authorizeHttpRequests(authorize ->
-                        authorize.anyRequest().authenticated())
-                .exceptionHandling((exceptions) -> exceptions
+                .sessionManagement(session -> session
+                        .sessionFixation().none()
+                        .maximumSessions(5)
+                )
+                .exceptionHandling(exceptions -> exceptions
                         .defaultAuthenticationEntryPointFor(
                                 new LoginUrlAuthenticationEntryPoint("/login"),
                                 new MediaTypeRequestMatcher(MediaType.TEXT_HTML)
@@ -52,43 +60,60 @@ public class SecurityConfiguration {
                 .build();
     }
 
+    /**
+     * Конфигурация ресурсного сервера (микросервисы)
+     */
     @Bean
     @Order(2)
     public SecurityFilterChain resourceServerFilterChain(HttpSecurity http) throws Exception {
         return http
+                .securityMatcher("/api/**")
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(HttpMethod.GET, "/api/public/**").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
-                .securityMatcher("/api/**")
-                .authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll())
                 .build();
     }
 
+    /**
+     * Базовая конфигурация для UI (форма входа, публичные ресурсы)
+     */
     @Bean
     @Order(3)
     public SecurityFilterChain defaultFilterChain(HttpSecurity http) throws Exception {
         return http
-                .csrf((csrf) -> csrf
-                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
-                .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/login", "/styles/**", "/fonts/**", "/images/**", "/index.html").permitAll()
+                        .requestMatchers("/login", "/styles/**", "/fonts/**", "/images/**").permitAll()
                         .requestMatchers(HttpMethod.POST, apiPrefix + "/users").permitAll()
                         .anyRequest().authenticated())
+                .csrf(csrf -> csrf
+                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
+                .cors(Customizer.withDefaults())
                 .formLogin(formLogin -> formLogin
                         .loginPage("/login")
-                        .defaultSuccessUrl("/index.html")
+                        .successHandler(((request, response, authentication) -> {
+                            if (authentication != null) {
+                                response.sendRedirect("/index.html");
+                            } else {
+                                response.sendRedirect("/login");
+                            }
+                        }))
                         .permitAll())
                 .build();
     }
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
-        config.addAllowedHeader("*");
-        config.addAllowedMethod("*");
-        config.addAllowedOrigin("http://localhost:8080");
+        config.setAllowedOrigins(List.of("http://localhost:8080", "http://localhost:5173"));
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
         return source;
     }
