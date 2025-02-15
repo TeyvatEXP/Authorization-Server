@@ -85,4 +85,15 @@
         </plugins>
     </build>
 
+    <repositories>
+        <repository>
+            <id>github</id>
+            <name>GitHub Teyvatexp Packages</name>
+            <url>https://maven.pkg.github.com/TeyvatEXP/Util</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
 </project>
